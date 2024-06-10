@@ -1,0 +1,29 @@
+{
+  "name": "tourist-attraction-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "express": "^4.19.2",
+    "joi": "^17.13.1",
+    "uuid": "^10.0.0",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.4.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/express": "^4.17.21",
+    "@types/uuid": "^9.0.8",
+    "eslint": "^9.4.0",
+    "globals": "^15.4.0",
+    "prisma": "^5.15.0",
+    "typescript-eslint": "^7.12.0"
+  }
+}
