@@ -1,83 +1,109 @@
 # User API Documentation
+
 This document describes the API for the User service.
 
-## Register User 
+## Table of Contents
+
+-  [Register User](#register-user)
+-  [Login User](#login-user)
+-  [Get Users](#get-users)
+-  [Get User by Username](#get-user-by-username)
+-  [Get Current User](#get-current-user)
+-  [Update Current User](#update-current-user)
+-  [Delete User by ID](#delete-user-by-id)
+-  [Logout User](#logout-user)
+
+## Register User
+
 Register a new user.
 
 ### Request
-- **URL**: `/api/users`
-- **Method**: `POST`
-- **Request Body**:
+
+-  **URL**: `/api/users`
+-  **Method**: `POST`
+-  **Request Body**:
+
 ```json
 {
    "full_name": "Example User",
-   "username": "exampleuser",
    "email": "user@example.com",
+   "username": "exampleuser",
    "password": "password123",
-   "role": "user"
+   "role": "USER"
 }
 ```
 
 ### Response Body Success
-- **Status Code**: `201`
-- **Response Body**:
+
+-  **Status Code**: `201`
+-  **Response Body**:
+
 ```json
 {
    "success": true,
    "message": "User registered successfully",
    "data": {
       "full_name": "Example User",
-      "username": "exampleuser",
       "email": "user@example.com",
-      "role": "user"
+      "username": "exampleuser",
+      "role": "USER"
    }
 }
-``` 
+```
 
 ### Response Body Failure
-- **Status Code**: `400`
-- **Response Body**:
+
+-  **Status Code**: `400`
+-  **Response Body**:
+
 ```json
 {
    "success": false,
    "message": "User already exists"
 }
-``` 
+```
 
 ## Login User
+
 Login an existing user.
 
 ### Request
-- **URL**: `/api/users/login`
-- **Method**: `POST`
-- **Request Body**:
+
+-  **URL**: `/api/users/login`
+-  **Method**: `POST`
+-  **Request Body**:
+
 ```json
 {
-  "username": "exampleuser",
-  "password": "password123",
+   "username": "exampleuser",
+   "password": "password123"
 }
 ```
 
 ### Response Body Success
-- **Status Code**: `200`
-- **Response Body**:
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
 ```json
 {
    "success": true,
    "message": "User logged in successfully",
    "data": {
       "full_name": "Example User",
-      "username": "exampleuser",
       "email": "user@example.com",
-      "role": "user",
+      "username": "exampleuser",
+      "role": "USER",
       "token": "unique_token"
    }
 }
 ```
 
 ### Response Body Failure
-- **Status Code**: `400`
-- **Response Body**:
+
+-  **Status Code**: `400`
+-  **Response Body**:
+
 ```json
 {
    "success": false,
@@ -85,40 +111,83 @@ Login an existing user.
 }
 ```
 
-## Update User
-Update an existing user.
+## Get Users
+
+Get all users.
 
 ### Request
-- **URL**: `/api/users/current`
-- **Method**: `PATCH`
-- **Headers**:
-  - `Authorization`: `Bearer unique_token`
-- **Request Body**:
-```json
-{
-   "full_name": "Updated User",
-   "email": "user@example.com"
-}
-```
+
+-  **URL**: `/api/users`
+-  **Method**: `GET`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
 
 ### Response Body Success
-- **Status Code**: `200`
-- **Response Body**:
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
 ```json
 {
    "success": true,
-   "message": "User updated successfully",
+   "message": "Users retrieved successfully",
+   "data": [
+      {
+         "full_name": "Example User",
+         "email": "user@example.com",
+         "username": "exampleuser",
+         "role": "USER"
+      }
+   ]
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Unauthorized"
+}
+```
+
+## Get User by Username
+
+Get an existing user by username.
+
+### Request
+
+-  **URL**: `/api/users/username/:username`
+-  **Method**: `GET`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "User retrieved successfully",
    "data": {
-      "full_name": "Updated User", // optional
-      "username": "exampleuser", // optional
-      "email": "user@example.com" // optional
+      "full_name": "Example User",
+      "email": "user@example.com",
+      "username": "exampleuser",
+      "role": "USER"
    }
 }
 ```
 
 ### Response Body Failure
-- **Status Code**: `404`
-- **Response Body**:
+
+-  **Status Code**: `404`
+-  **Response Body**:
+
 ```json
 {
    "success": false,
@@ -126,34 +195,125 @@ Update an existing user.
 }
 ```
 
-## Get User
-Get an existing user.
+## Get Current User
+
+Get the current user.
 
 ### Request
-- **URL**: `/api/users/current`
-- **Method**: `GET`
-- **Headers**:
-  - `Authorization`: `Bearer unique_token`
+
+-  **URL**: `/api/users/current`
+-  **Method**: `GET`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
 
 ### Response Body Success
-- **Status Code**: `200`
-- **Response Body**:
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
 ```json
 {
    "success": true,
    "message": "User retrieved successfully",
    "data": {
-      "full_name": "Updated User",
-      "username": "exampleuser",
+      "full_name": "Example User",
       "email": "user@example.com",
-      "role": "user"
+      "username": "exampleuser",
+      "role": "USER"
    }
 }
 ```
 
 ### Response Body Failure
-- **Status Code**: `401`
-- **Response Body**:
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Unauthorized"
+}
+```
+
+## Update Current User
+
+Update the current user.
+
+### Request
+
+-  **URL**: `/api/users/current`
+-  **Method**: `PATCH`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+-  **Request Body**:
+
+```json
+{
+   "full_name": "Updated User", // optional
+   "email": "user@example.com", // optional
+   "username": "exampleuser", // optional
+   "password": "password" // optional
+}
+```
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "User updated successfully",
+   "data": {
+      "full_name": "Updated User",
+      "email": "user@example.com",
+      "username": "exampleuser"
+   }
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `404`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "User not found"
+}
+```
+
+## Delete User by ID
+
+Delete an existing user by ID.
+
+### Request
+
+-  **URL**: `/api/users/:id`
+-  **Method**: `DELETE`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "User deleted successfully"
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
 ```json
 {
    "success": false,
@@ -162,17 +322,21 @@ Get an existing user.
 ```
 
 ## Logout User
+
 Logout an existing user.
 
 ### Request
-- **URL**: `/api/users/logout`
-- **Method**: `POST`
-- **Headers**:
-  - `Authorization`: `Bearer unique_token`
+
+-  **URL**: `/api/users/logout`
+-  **Method**: `POST`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
 
 ### Response Body Success
-- **Status Code**: `200`
-- **Response Body**:
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
 ```json
 {
    "success": true,
@@ -181,8 +345,10 @@ Logout an existing user.
 ```
 
 ### Response Body Failure
-- **Status Code**: `401`
-- **Response Body**:
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
 ```json
 {
    "success": false,

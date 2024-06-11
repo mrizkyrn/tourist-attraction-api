@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { UserService } from '../service/user-service';
-import { RegisterUserRequest, LoginUserRequest } from '../model/user-model';
+import { RegisterUserRequest, LoginUserRequest, UpdateUserRequest } from '../model/user-model';
+import { UserRequest } from '../type/user-request';
 
 export class UserController {
    static async register(req: Request, res: Response, next: NextFunction) {
@@ -28,6 +29,78 @@ export class UserController {
          res.status(200).json({
             success: true,
             message: 'User logged in successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async getUsers(req: Request, res: Response, next: NextFunction) {
+      try {
+         const response = await UserService.getUsers();
+
+         res.status(200).json({
+            success: true,
+            message: 'Users retrieved successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async getUserByUsername(req: Request, res: Response, next: NextFunction) {
+      try {
+         const username = req.params.username as string;
+         const response = await UserService.getUserByUsername(username);
+
+         res.status(200).json({
+            success: true,
+            message: 'User retrieved successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async getCurrentUser(req: UserRequest, res: Response, next: NextFunction) {
+      try {
+         const response = await UserService.getCurrentUser(req.user);
+         res.status(200).json({
+            success: true,
+            message: 'User retrieved successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async updateCurrentUser(req: UserRequest, res: Response, next: NextFunction) {
+      try {
+         const request: UpdateUserRequest = req.body as UpdateUserRequest;
+         const response = await UserService.updateCurrentUser(req.user, request);
+
+         res.status(200).json({
+            success: true,
+            message: 'User updated successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async deleteUserByUsername(req: Request, res: Response, next: NextFunction) {
+      try {
+         const username = req.params.username as string;
+         const response = await UserService.deleteUserByUsername(username);
+
+         res.status(200).json({
+            success: true,
+            message: 'User deleted successfully',
             data: response,
          });
       } catch (error) {
