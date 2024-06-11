@@ -13,7 +13,8 @@ Register a new user.
    "full_name": "Example User",
    "username": "exampleuser",
    "email": "user@example.com",
-   "password": "password123"
+   "password": "password123",
+   "role": "user"
 }
 ```
 
@@ -27,7 +28,8 @@ Register a new user.
    "data": {
       "full_name": "Example User",
       "username": "exampleuser",
-      "email": "user@example.com"
+      "email": "user@example.com",
+      "role": "user"
    }
 }
 ``` 
@@ -67,6 +69,7 @@ Login an existing user.
       "full_name": "Example User",
       "username": "exampleuser",
       "email": "user@example.com",
+      "role": "user",
       "token": "unique_token"
    }
 }
@@ -142,7 +145,8 @@ Get an existing user.
    "data": {
       "full_name": "Updated User",
       "username": "exampleuser",
-      "email": "user@example.com"
+      "email": "user@example.com",
+      "role": "user"
    }
 }
 ```

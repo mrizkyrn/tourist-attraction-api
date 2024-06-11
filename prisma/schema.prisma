@@ -9,12 +9,17 @@ datasource db {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
-  full_name String  @db.VarChar(100)
-  username  String  @unique @db.VarChar(100)
-  email     String  @unique @db.VarChar(100)
-  password  String  @db.VarChar(100)
-  token     String? @db.VarChar(100)
+  id        Int    @id @default(autoincrement())
+  full_name String @db.VarChar(100)
+  username  String @unique @db.VarChar(100)
+  email     String @unique @db.VarChar(100)
+  password  String @db.VarChar(100)
+  role      Role   @default(USER)
 
   @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
 }
