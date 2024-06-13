@@ -26,7 +26,7 @@ export class TouristAttractionValidation {
       tags: z.array(z.string()).min(1).max(10).optional(),
       sort: z.string().min(3).max(100).optional(),
       order: z.string().min(3).max(100).optional(),
-      page: z.number().min(1).optional(),
-      limit: z.number().min(1).optional(),
+      page: z.number().min(1).positive(),
+      limit: z.number().min(1).max(100).positive(),
    });
 }

@@ -20,3 +20,5 @@ authApi.post('/api/tourist-attractions', TouristAttractionController.create);
 authApi.get('/api/tourist-attractions', TouristAttractionController.search);
 authApi.get('/api/tourist-attractions/:id', TouristAttractionController.getDetailById);
 authApi.get('/api/tourist-attractions/status/:status', permit('ADMIN'), TouristAttractionController.getByStatus);
+authApi.put('/api/tourist-attractions/:id', TouristAttractionController.update);
+authApi.delete('/api/tourist-attractions/:id', TouristAttractionController.delete);

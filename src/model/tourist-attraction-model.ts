@@ -44,8 +44,8 @@ export type TouristAttractionsQueryParams = {
    tags?: string[];
    sort?: string;
    order?: 'asc' | 'desc';
-   page?: number;
-   limit?: number;
+   page: number;
+   limit: number;
 };
 
 export type CreateTouristAttractionRequest = {

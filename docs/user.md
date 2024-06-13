@@ -286,13 +286,13 @@ Update the current user.
 }
 ```
 
-## Delete User by ID
+## Delete User by Usernae
 
-Delete an existing user by ID.
+Delete an existing user by username.
 
 ### Request
 
--  **URL**: `/api/users/:id`
+-  **URL**: `/api/users/username/:username`
 -  **Method**: `DELETE`
 -  **Headers**:
    -  `Authorization`: `Bearer unique_token`
