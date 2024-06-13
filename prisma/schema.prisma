@@ -16,10 +16,44 @@ model User {
   password  String @db.VarChar(100)
   role      Role   @default(USER)
 
+  tourist_attractions TouristAttraction[]
+
   @@map("users")
+}
+
+model TouristAttraction {
+  id           Int      @id @default(autoincrement())
+  user_id      Int
+  thumbnail    String   @db.VarChar(100)
+  name         String   @db.VarChar(100)
+  description  String   @db.Text
+  entrance_fee Float
+  category     String   @db.VarChar(100)
+  tags         String[]
+  rating       Float    @default(0)
+  status       String   @default("PENDING")
+  address      String   @db.VarChar(225)
+  city         String   @db.VarChar(100)
+  province     String   @db.VarChar(100)
+  country      String   @db.VarChar(100)
+  postal_code  String   @db.VarChar(20)
+  latitude     Float?
+  longitude    Float?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  user      User       @relation(fields: [user_id], references: [id])
+
+  @@map("tourist_attractions")
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  REJECTED
 }
