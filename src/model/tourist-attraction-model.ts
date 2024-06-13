@@ -9,6 +9,7 @@ export type TouristAttractionResponse = {
    category: string;
    tags: string[];
    rating: number;
+   status?: string;
    city: string;
    province: string;
 };
@@ -22,6 +23,7 @@ export type TouristAttractionDetailResponse = {
    category: string;
    tags: string[];
    rating: number;
+   status: string;
    entrance_fee: number;
    address: string;
    city: string;
@@ -32,6 +34,18 @@ export type TouristAttractionDetailResponse = {
    longitude?: number | null;
    created_at: Date;
    updated_at: Date;
+};
+
+export type TouristAttractionsQueryParams = {
+   name?: string;
+   category?: string;
+   city?: string;
+   province?: string;
+   tags?: string[];
+   sort?: string;
+   order?: 'asc' | 'desc';
+   page?: number;
+   limit?: number;
 };
 
 export type CreateTouristAttractionRequest = {
@@ -60,6 +74,7 @@ export function toTouristAttractionResponse(touristAttraction: TouristAttraction
       category: touristAttraction.category,
       tags: touristAttraction.tags,
       rating: touristAttraction.rating,
+      status: touristAttraction.status,
       city: touristAttraction.city,
       province: touristAttraction.province,
    };
@@ -75,6 +90,7 @@ export function toTouristAttractionDetailResponse(touristAttraction: TouristAttr
       category: touristAttraction.category,
       tags: touristAttraction.tags,
       rating: touristAttraction.rating,
+      status: touristAttraction.status,
       entrance_fee: touristAttraction.entrance_fee,
       address: touristAttraction.address,
       city: touristAttraction.city,

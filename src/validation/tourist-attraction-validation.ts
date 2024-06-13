@@ -16,4 +16,17 @@ export class TouristAttractionValidation {
       latitude: z.number().optional(),
       longitude: z.number().optional(),
    });
+
+   static readonly SEARCH: ZodType = z.object({
+      name: z.string().min(3).max(100).optional(),
+      category: z.string().min(3).max(100).optional(),
+      city: z.string().min(3).max(100).optional(),
+      province: z.string().min(3).max(100).optional(),
+      country: z.string().min(3).max(100).optional(),
+      tags: z.array(z.string()).min(1).max(10).optional(),
+      sort: z.string().min(3).max(100).optional(),
+      order: z.string().min(3).max(100).optional(),
+      page: z.number().min(1).optional(),
+      limit: z.number().min(1).optional(),
+   });
 }

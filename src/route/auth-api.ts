@@ -17,3 +17,6 @@ authApi.delete('/api/users/:username', permit('ADMIN'), UserController.deleteUse
 
 // Tourist attraction routes
 authApi.post('/api/tourist-attractions', TouristAttractionController.create);
+authApi.get('/api/tourist-attractions', TouristAttractionController.search);
+authApi.get('/api/tourist-attractions/:id', TouristAttractionController.getDetailById);
+authApi.get('/api/tourist-attractions/status/:status', permit('ADMIN'), TouristAttractionController.getByStatus);

@@ -5,9 +5,9 @@ This document describes the API for the Tourist Attraction service.
 ## Table of Contents
 
 -  [Create Tourist Attraction](#create-tourist-attraction)
--  [Get Tourist Attractions](#get-tourist-attractions)
--  [Get Tourist Attraction by ID](#get-tourist-attraction-by-id)
--  [Get Approved Tourist Attractions](#get-approved-tourist-attractions)
+-  [Search Tourist Attractions](#search-tourist-attractions)
+-  [Get Tourist Attraction Details by ID](#get-tourist-attraction-details-by-id)
+-  [Get Tourist Attractions by Status](#get-tourist-attractions-by-status)
 -  [Update Tourist Attraction](#update-tourist-attraction)
 -  [Delete Tourist Attraction by ID](#delete-tourist-attraction-by-id)
 
@@ -83,9 +83,9 @@ Create a new tourist attraction.
 }
 ```
 
-## Get Tourist Attractions
+## Search Tourist Attractions
 
-Get a list of tourist attractions, with optional filters and pagination.
+Search for approved tourist attractions by name, with optional filters and pagination.
 
 ### Request
 
@@ -94,6 +94,7 @@ Get a list of tourist attractions, with optional filters and pagination.
 -  **Headers**:
    -  `Authorization`: `Bearer unique_token`
 -  **Query Parameters**:
+   -  `name`: (Required) Search by name
    -  `category`: (Optional) Filter by category
    -  `city`: (Optional) Filter by city
    -  `province`: (Optional) Filter by province
@@ -147,9 +148,9 @@ Get a list of tourist attractions, with optional filters and pagination.
 }
 ```
 
-## Get Tourist Attraction by ID
+## Get Tourist Attraction Details by ID
 
-Get an details of a tourist attraction by ID.
+Get details of a tourist attraction by ID.
 
 ### Request
 
@@ -202,25 +203,16 @@ Get an details of a tourist attraction by ID.
 }
 ```
 
-## Get Approved Tourist Attractions
+## Get Tourist Attractions by Status
 
-Get a list of approved tourist attractions, with optional filters and pagination.
+Get tourist attractions by status.
 
 ### Request
 
--  **URL**: `/api/tourist-attractions/approved`
+-  **URL**: `/api/tourist-attractions/status/:status`
 -  **Method**: `GET`
 -  **Headers**:
    -  `Authorization`: `Bearer unique_token`
--  **Query Parameters**:
-   -  `category`: (Optional) Filter by category
-   -  `city`: (Optional) Filter by city
-   -  `province`: (Optional) Filter by province
-   -  `tags`: (Optional) Filter by tags
-   -  `sort`: (Optional) Sort by rating
-   -  `order`: (Optional) Sort order (asc or desc)
-   -  `page`: (Optional) Page number (default: 1)
-   -  `limit`: (Optional) Number of results per page (default: 10)
 
 ### Response Body Success
 
@@ -230,7 +222,7 @@ Get a list of approved tourist attractions, with optional filters and pagination
 ```json
 {
    "success": true,
-   "message": "Approved tourist attractions retrieved successfully",
+   "message": "Tourist attractions retrieved successfully",
    "data": [
       {
          "id": 1,
@@ -241,16 +233,11 @@ Get a list of approved tourist attractions, with optional filters and pagination
          "category": "Example Category",
          "tags": ["tag1", "tag2", "tag3"],
          "rating": 0,
+         "status": "APPROVED",
          "city": "Example City",
          "province": "Example State"
       }
-   ],
-   "pagination": {
-      "total": 1,
-      "current_page": 1,
-      "total_pages": 1,
-      "limit": 10
-   }
+   ]
 }
 ```
 
