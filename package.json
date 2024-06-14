@@ -7,7 +7,9 @@
     "build": "tsc",
     "start": "node src/main.ts",
     "dev": "nodemon src/main.ts",
-    "prisma": "npx prisma"
+    "vercel-build": "echo build",
+    "seed": "ts-node prisma/seed.ts",
+    "delete": "ts-node prisma/delete.ts"
   },
   "author": "",
   "license": "ISC",
