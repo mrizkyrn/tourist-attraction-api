@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { UserService } from '../service/user-service';
 import { RegisterUserRequest, LoginUserRequest, UpdateUserRequest } from '../model/user-model';
 import { UserRequest } from '../type/user-request';
+import { logger } from '../application/logging';
 
 export class UserController {
    static async register(req: Request, res: Response, next: NextFunction) {
@@ -98,10 +99,10 @@ export class UserController {
          const username = req.params.username as string;
          const response = await UserService.deleteUserByUsername(username);
 
+         logger.debug('response: ', response);
          res.status(200).json({
             success: true,
             message: 'User deleted successfully',
-            data: response,
          });
       } catch (error) {
          next(error);
