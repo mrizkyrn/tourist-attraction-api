@@ -1,5 +1,11 @@
 import bcrypt from 'bcrypt';
-import { LoginUserRequest, RegisterUserRequest, UpdateUserRequest, UserResponse, toUserResponse } from '../model/user-model';
+import {
+   LoginUserRequest,
+   RegisterUserRequest,
+   UpdateUserRequest,
+   UserResponse,
+   toUserResponse,
+} from '../model/user-model';
 import { Validation } from '../validation/validation';
 import { prismaClient } from '../application/database';
 import { ResponseError } from '../error/response-error';
@@ -59,7 +65,7 @@ export class UserService {
          { id: user.id, full_name: user.full_name, email: user.email, username: user.username, role: user.role },
          String(process.env.JWT_SECRET),
          {
-            expiresIn: 60 * 60,
+            expiresIn: 60 * 60 * 24,
          }
       );
 
@@ -111,7 +117,7 @@ export class UserService {
          }
       }
 
-      // Hash the password
+      // Hash the password if it is provided
       if (updateRequest.password) {
          updateRequest.password = await bcrypt.hash(updateRequest.password, 10);
       }
@@ -122,8 +128,19 @@ export class UserService {
          data: updateRequest,
       });
 
+      // Update the user in the JWT token
+      const token = jwt.sign(
+         { id: updatedUser.id, full_name: updatedUser.full_name, email: updatedUser.email, username: updatedUser.username, role: updatedUser.role },
+         String(process.env.JWT_SECRET),
+         {
+            expiresIn: 60 * 60 * 24,
+         }
+      );
+      
       // Return the user response
-      return toUserResponse(updatedUser);
+      const userResponse = toUserResponse(updatedUser);
+      userResponse.token = token;
+      return userResponse;
    }
 
    static async deleteUserByUsername(username: string): Promise<UserResponse> {
@@ -138,7 +155,7 @@ export class UserService {
 
       // Delete the user
       await prismaClient.user.delete({
-         where: { id: user.id },
+         where: { username: username },
       });
 
       // Return the user response

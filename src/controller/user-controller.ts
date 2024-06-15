@@ -84,6 +84,8 @@ export class UserController {
          const request: UpdateUserRequest = req.body as UpdateUserRequest;
          const response = await UserService.updateCurrentUser(req.user, request);
 
+         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true });
+
          res.status(200).json({
             success: true,
             message: 'User updated successfully',
