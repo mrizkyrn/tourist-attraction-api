@@ -14,7 +14,7 @@ export class TouristAttractionController {
             throw new Error('Thumbnail is required');
          }
 
-         request.thumbnail = req.file.path;
+         request.thumbnail = path.join('/images', req.file.filename);
          
          const response = await TouristAttractionService.create(req.user, request);
 
