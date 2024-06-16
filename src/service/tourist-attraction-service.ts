@@ -23,13 +23,20 @@ export class TouristAttractionService {
          user_id: user.id,
       };
 
-      // Create the tourist attraction
-      const touristAttraction = await prismaClient.touristAttraction.create({
-         data: record,
-      });
+      console.log(record);
+      
+      try {
+         // Create the tourist attraction
+         const touristAttraction = await prismaClient.touristAttraction.create({
+            data: record,
+         });
 
-      // Return the tourist attraction response
-      return toTouristAttractionDetailResponse(touristAttraction);
+         // Return the tourist attraction response
+         return toTouristAttractionDetailResponse(touristAttraction);
+      } catch (error) {
+         console.log('error: ', error);
+         throw new ResponseError(400, 'Error creating tourist attraction');
+      }
    }
 
    static async search(queryParams: TouristAttractionsQueryParams): Promise<Pageable<TouristAttractionResponse>> {
