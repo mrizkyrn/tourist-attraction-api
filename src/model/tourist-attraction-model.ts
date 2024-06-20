@@ -2,12 +2,13 @@ import { TouristAttraction } from '@prisma/client';
 
 export type TouristAttractionResponse = {
    id: number;
-   user_id: number;
+   username: string;
    thumbnail: string;
    name: string;
    description: string;
    category: string;
    tags: string[];
+   entrance_fee: number;
    rating: number;
    status?: string;
    city: string;
@@ -16,7 +17,7 @@ export type TouristAttractionResponse = {
 
 export type TouristAttractionDetailResponse = {
    id: number;
-   user_id: number;
+   username: string;
    thumbnail: string;
    name: string;
    description: string;
@@ -67,12 +68,13 @@ export type CreateTouristAttractionRequest = {
 export function toTouristAttractionResponse(touristAttraction: TouristAttraction): TouristAttractionResponse {
    return {
       id: touristAttraction.id,
-      user_id: touristAttraction.user_id,
+      username: touristAttraction.username,
       thumbnail: touristAttraction.thumbnail,
       name: touristAttraction.name,
       description: touristAttraction.description,
       category: touristAttraction.category,
       tags: touristAttraction.tags,
+      entrance_fee: touristAttraction.entrance_fee,
       rating: touristAttraction.rating,
       status: touristAttraction.status,
       city: touristAttraction.city,
@@ -83,7 +85,7 @@ export function toTouristAttractionResponse(touristAttraction: TouristAttraction
 export function toTouristAttractionDetailResponse(touristAttraction: TouristAttraction): TouristAttractionDetailResponse {
    return {
       id: touristAttraction.id,
-      user_id: touristAttraction.user_id,
+      username: touristAttraction.username,
       thumbnail: touristAttraction.thumbnail,
       name: touristAttraction.name,
       description: touristAttraction.description,

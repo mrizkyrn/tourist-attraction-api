@@ -18,6 +18,11 @@ export class UserValidation {
       full_name: z.string().min(3).max(100).optional(),
       email: z.string().email().optional(),
       username: z.string().min(3).max(100).regex(/^[a-zA-Z0-9_]+$/).optional(),
-      password: z.string().min(6).max(100).optional(),
    });
+
+   static readonly UPDATE_PASSWORD: ZodType = z.object({
+      old_password: z.string().max(100),
+      new_password: z.string().min(6).max(100),
+   });
+
 }
