@@ -3,11 +3,19 @@ import { TouristAttractionService } from '../service/tourist-attraction-service'
 import { CreateTouristAttractionRequest, TouristAttractionsQueryParams } from '../model/tourist-attraction-model';
 import { UserRequest } from '../type/user-request';
 import { logger } from '../application/logging';
+import path from 'path';
 
 export class TouristAttractionController {
    static async create(req: UserRequest, res: Response, next: NextFunction) {
       try {
          const request: CreateTouristAttractionRequest = req.body as CreateTouristAttractionRequest;
+         
+         if (!req.file) {
+            throw new Error('Thumbnail is required');
+         }
+
+         request.thumbnail = path.join('/images', req.file.filename);
+         
          const response = await TouristAttractionService.create(req.user, request);
 
          res.status(201).json({
@@ -16,6 +24,7 @@ export class TouristAttractionController {
             data: response,
          });
       } catch (error) {
+         console.log("catch error: ", error);
          next(error);
       }
    }
@@ -97,8 +106,8 @@ export class TouristAttractionController {
       try {
          const id = Number(req.params.id);
          const response = await TouristAttractionService.delete(req.user, id);
-         
-         logger.debug("response: ", response);
+
+         logger.debug('response: ', response);
          res.status(200).json({
             success: true,
             message: 'Tourist attraction deleted successfully',

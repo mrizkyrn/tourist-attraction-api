@@ -7,6 +7,7 @@ import { authApi } from '../route/auth-api';
 
 export const web = express();
 web.use(express.json());
+web.use(express.static('public'));
 web.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 web.use(cookieParser());
 
