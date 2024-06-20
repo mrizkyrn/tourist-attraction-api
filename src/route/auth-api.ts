@@ -20,6 +20,7 @@ authApi.delete('/api/users/:username', permit('ADMIN'), UserController.deleteUse
 authApi.post('/api/tourist-attractions', upload.single('thumbnail'), TouristAttractionController.create);
 authApi.get('/api/tourist-attractions', TouristAttractionController.search);
 authApi.get('/api/tourist-attractions/:id', TouristAttractionController.getDetailById);
+authApi.get('/api/tourist-attractions/username/:username', TouristAttractionController.getByUsername);
 authApi.get('/api/tourist-attractions/status/:status', permit('ADMIN'), TouristAttractionController.getByStatus);
-authApi.put('/api/tourist-attractions/:id', TouristAttractionController.update);
+authApi.put('/api/tourist-attractions/:id', upload.single('thumbnail'), TouristAttractionController.update);
 authApi.delete('/api/tourist-attractions/:id', TouristAttractionController.delete);

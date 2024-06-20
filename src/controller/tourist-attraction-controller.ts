@@ -71,6 +71,21 @@ export class TouristAttractionController {
       }
    }
 
+   static async getByUsername(req: Request, res: Response, next: NextFunction) {
+      try {
+         const username = req.params.username;
+         const response = await TouristAttractionService.getByUsername(username);
+
+         res.status(200).json({
+            success: true,
+            message: 'Tourist attractions retrieved successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
    static async getByStatus(req: Request, res: Response, next: NextFunction) {
       try {
          const status = req.params.status;
@@ -87,9 +102,12 @@ export class TouristAttractionController {
    }
 
    static async update(req: UserRequest, res: Response, next: NextFunction) {
+      console.log("req.body: ", req.body);
       try {
          const id = Number(req.params.id);
          const request: CreateTouristAttractionRequest = req.body as CreateTouristAttractionRequest;
+
+
          const response = await TouristAttractionService.update(req.user, id, request);
 
          res.status(200).json({
