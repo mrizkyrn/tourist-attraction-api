@@ -4,6 +4,7 @@ import { CreateTouristAttractionRequest, TouristAttractionsQueryParams } from '.
 import { UserRequest } from '../type/user-request';
 import { logger } from '../application/logging';
 import path from 'path';
+import fs from 'fs';
 
 export class TouristAttractionController {
    static async create(req: UserRequest, res: Response, next: NextFunction) {
@@ -24,7 +25,10 @@ export class TouristAttractionController {
             data: response,
          });
       } catch (error) {
-         console.log("catch error: ", error);
+         if (req.file && req.file.path) {
+            fs.unlinkSync(req.file.path);
+         }
+         
          next(error);
       }
    }
@@ -106,8 +110,8 @@ export class TouristAttractionController {
       try {
          const id = Number(req.params.id);
          const response = await TouristAttractionService.delete(req.user, id);
-
-         logger.debug('response: ', response);
+         
+         logger.debug("response: ", response);
          res.status(200).json({
             success: true,
             message: 'Tourist attraction deleted successfully',
