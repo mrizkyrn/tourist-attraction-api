@@ -8,6 +8,7 @@ export type TouristAttractionResponse = {
    description: string;
    category: string;
    tags: string[];
+   entrance_fee: number;
    rating: number;
    status?: string;
    city: string;
@@ -73,6 +74,7 @@ export function toTouristAttractionResponse(touristAttraction: TouristAttraction
       description: touristAttraction.description,
       category: touristAttraction.category,
       tags: touristAttraction.tags,
+      entrance_fee: touristAttraction.entrance_fee,
       rating: touristAttraction.rating,
       status: touristAttraction.status,
       city: touristAttraction.city,

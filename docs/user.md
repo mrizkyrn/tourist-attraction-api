@@ -252,8 +252,7 @@ Update the current user.
 {
    "full_name": "Updated User", // optional
    "email": "user@example.com", // optional
-   "username": "exampleuser", // optional
-   "password": "password" // optional
+   "username": "exampleuser" // optional
 }
 ```
 
@@ -283,6 +282,49 @@ Update the current user.
 {
    "success": false,
    "message": "User not found"
+}
+```
+
+## Update Current User Password
+
+Update the current user password.
+
+### Request
+
+-  **URL**: `/api/users/current/password`
+-  **Method**: `PATCH`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+-  **Request Body**:
+   
+   ```json
+   {
+      "old_password": "password123",
+      "new_password": "newpassword123"
+   }
+   ```
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "Password updated successfully"
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `400`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Old password is incorrect"
 }
 ```
 

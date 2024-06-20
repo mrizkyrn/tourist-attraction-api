@@ -24,7 +24,11 @@ export type UpdateUserRequest = {
    full_name?: string;
    email?: string;
    username?: string;
-   password?: string;
+};
+
+export type UpdatePasswordRequest = {
+   old_password: string;
+   new_password: string;
 };
 
 export function toUserResponse(user: User): UserResponse {
