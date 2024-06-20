@@ -7,6 +7,7 @@ This document describes the API for the Tourist Attraction service.
 -  [Create Tourist Attraction](#create-tourist-attraction)
 -  [Search Tourist Attractions](#search-tourist-attractions)
 -  [Get Tourist Attraction Details by ID](#get-tourist-attraction-details-by-id)
+-  [Get Tourist Attraction Details by Username](#get-tourist-attraction-details-by-username)
 -  [Get Tourist Attractions by Status](#get-tourist-attractions-by-status)
 -  [Update Tourist Attraction](#update-tourist-attraction)
 -  [Delete Tourist Attraction by ID](#delete-tourist-attraction-by-id)
@@ -50,7 +51,7 @@ Create a new tourist attraction.
    "message": "Tourist attraction created successfully",
    "data": {
       "id": 1,
-      "user_id": 1,
+      "username": "exampleuser",
       "thumbnail": "https://example.com/thumbnail.jpg",
       "name": "Example Attraction",
       "description": "This is an example description of a tourist attraction.",
@@ -116,7 +117,7 @@ Search for approved tourist attractions by name, with optional filters and pagin
    "data": [
       {
          "id": 1,
-         "user_id": 1,
+         "username": "exampleuser",
          "thumbnail": "https://example.com/thumbnail.jpg",
          "name": "Example Attraction",
          "description": "This is an example description of a tourist attraction.",
@@ -170,7 +171,62 @@ Get details of a tourist attraction by ID.
    "message": "Tourist attraction retrieved successfully",
    "data": {
       "id": 1,
-      "user_id": 1,
+      "username": "exampleuser",
+      "thumbnail": "https://example.com/thumbnail.jpg",
+      "name": "Example Attraction",
+      "description": "This is an example description of a tourist attraction.",
+      "category": "Example Category",
+      "tags": ["tag1", "tag2", "tag3"],
+      "entrance_fee": 15.0,
+      "rating": 0,
+      "status": "PENDING",
+      "address": "123 Example Street",
+      "city": "Example City",
+      "province": "Example State",
+      "country": "Example Country",
+      "postal_code": "12345",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "updated_at": "2024-06-12T00:00:00.000Z"
+   }
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `404`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Tourist attraction not found"
+}
+```
+
+## Get Tourist Attraction Details by Username
+
+Get tourist attraction by username.
+
+### Request
+
+-  **URL**: `/api/tourist-attractions/username/:username`
+-  **Method**: `GET`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "Tourist attraction retrieved successfully",
+   "data": {
+      "id": 1,
+      "username": "exampleuser",
       "thumbnail": "https://example.com/thumbnail.jpg",
       "name": "Example Attraction",
       "description": "This is an example description of a tourist attraction.",
@@ -226,7 +282,7 @@ Get tourist attractions by status.
    "data": [
       {
          "id": 1,
-         "user_id": 1,
+         "username": "exampleuser",
          "thumbnail": "https://example.com/thumbnail.jpg",
          "name": "Example Attraction",
          "description": "This is an example description of a tourist attraction.",
@@ -294,7 +350,7 @@ Update an existing tourist attraction.
    "message": "Tourist attraction updated successfully",
    "data": {
       "id": 1,
-      "user_id": 1,
+      "username": "exampleuser",
       "thumbnail": "https://example.com/thumbnail.jpg",
       "name": "Updated Attraction",
       "description": "This is an updated description of a tourist attraction.",

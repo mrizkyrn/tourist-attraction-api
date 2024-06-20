@@ -4,7 +4,7 @@ CREATE TYPE "Status" AS ENUM ('PENDING', 'APPROVED', 'REJECTED');
 -- CreateTable
 CREATE TABLE "tourist_attractions" (
     "id" SERIAL NOT NULL,
-    "user_id" INTEGER NOT NULL,
+    "username" VARCHAR(100) NOT NULL,
     "thumbnail" VARCHAR(100) NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" TEXT NOT NULL,
@@ -27,4 +27,4 @@ CREATE TABLE "tourist_attractions" (
 );
 
 -- AddForeignKey
-ALTER TABLE "tourist_attractions" ADD CONSTRAINT "tourist_attractions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "tourist_attractions" ADD CONSTRAINT "tourist_attractions_username_fkey" FOREIGN KEY ("username") REFERENCES "users"("username") ON DELETE RESTRICT ON UPDATE CASCADE;

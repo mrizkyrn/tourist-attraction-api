@@ -14,17 +14,26 @@ import { Pageable } from '../model/page';
 
 export class TouristAttractionService {
    static async create(user: User, request: CreateTouristAttractionRequest): Promise<TouristAttractionResponse> {
+      // Check if the user have already created a tourist attraction
+      const existingTouristAttraction = await prismaClient.touristAttraction.findFirst({
+         where: { username: user.username },
+      });
+
+      if (existingTouristAttraction) {
+         throw new ResponseError(400, 'User already has a tourist attraction');
+      }
+
       // Validate the request body
       const createRequest = Validation.validate(TouristAttractionValidation.CREATE, request);
 
       // Create the tourist attraction record
       const record = {
          ...createRequest,
-         user_id: user.id,
+         username: user.username,
       };
 
       console.log(record);
-      
+
       try {
          // Create the tourist attraction
          const touristAttraction = await prismaClient.touristAttraction.create({
@@ -48,6 +57,7 @@ export class TouristAttractionService {
 
       // Define the filter options
       const filter: Prisma.TouristAttractionWhereInput = {
+         // status: 'APPROVED', // Filter only approved tourist attractions
          name: searchRequest.name ? { contains: searchRequest.name, mode: 'insensitive' } : undefined,
          category: searchRequest.category ? { contains: searchRequest.category, mode: 'insensitive' } : undefined,
          city: searchRequest.city ? { contains: searchRequest.city, mode: 'insensitive' } : undefined,
@@ -97,6 +107,21 @@ export class TouristAttractionService {
       return toTouristAttractionDetailResponse(touristAttraction);
    }
 
+   static async getByUsername(username: string): Promise<TouristAttractionResponse> {
+      // Retrieve the tourist attraction
+      const touristAttraction = await prismaClient.touristAttraction.findFirst({
+         where: { username },
+      });
+
+      // Check if the tourist attraction exists
+      if (!touristAttraction) {
+         throw new ResponseError(404, 'Tourist attraction not found');
+      }
+
+      // Return the tourist attraction response
+      return toTouristAttractionDetailResponse(touristAttraction);
+   }
+
    static async getByStatus(status: string): Promise<TouristAttractionResponse[]> {
       // Retrieve the tourist attractions
       const touristAttractions = await prismaClient.touristAttraction.findMany({
@@ -128,7 +153,7 @@ export class TouristAttractionService {
       }
 
       // Check if the user is the owner of the tourist attraction
-      if (touristAttraction.user_id !== user.id) {
+      if (touristAttraction.username !== user.username) {
          throw new ResponseError(403, 'Forbidden');
       }
 
@@ -159,7 +184,7 @@ export class TouristAttractionService {
       }
 
       // Check if the user is the owner of the tourist attraction
-      if (touristAttraction.user_id !== user.id) {
+      if (touristAttraction.username !== user.username) {
          throw new ResponseError(403, 'Forbidden');
       }
 
