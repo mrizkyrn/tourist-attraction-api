@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { UserService } from '../service/user-service';
-import { RegisterUserRequest, LoginUserRequest, UpdateUserRequest } from '../model/user-model';
+import { RegisterUserRequest, LoginUserRequest, UpdateUserRequest, UpdatePasswordRequest } from '../model/user-model';
 import { UserRequest } from '../type/user-request';
 import { logger } from '../application/logging';
 
@@ -25,7 +25,8 @@ export class UserController {
          const request: LoginUserRequest = req.body as LoginUserRequest;
          const response = await UserService.login(request);
 
-         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true });
+         const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true, maxAge });
 
          res.status(200).json({
             success: true,
@@ -37,9 +38,9 @@ export class UserController {
       }
    }
 
-   static async getUsers(req: Request, res: Response, next: NextFunction) {
+   static async getAll(req: Request, res: Response, next: NextFunction) {
       try {
-         const response = await UserService.getUsers();
+         const response = await UserService.getAll();
 
          res.status(200).json({
             success: true,
@@ -51,10 +52,10 @@ export class UserController {
       }
    }
 
-   static async getUserByUsername(req: Request, res: Response, next: NextFunction) {
+   static async getByUsername(req: Request, res: Response, next: NextFunction) {
       try {
          const username = req.params.username as string;
-         const response = await UserService.getUserByUsername(username);
+         const response = await UserService.getByUsername(username);
 
          res.status(200).json({
             success: true,
@@ -66,9 +67,9 @@ export class UserController {
       }
    }
 
-   static async getCurrentUser(req: UserRequest, res: Response, next: NextFunction) {
+   static async getCurrent(req: UserRequest, res: Response, next: NextFunction) {
       try {
-         const response = await UserService.getCurrentUser(req.user);
+         const response = await UserService.getCurrent(req.user);
          res.status(200).json({
             success: true,
             message: 'User retrieved successfully',
@@ -79,12 +80,13 @@ export class UserController {
       }
    }
 
-   static async updateCurrentUser(req: UserRequest, res: Response, next: NextFunction) {
+   static async updateCurrent(req: UserRequest, res: Response, next: NextFunction) {
       try {
          const request: UpdateUserRequest = req.body as UpdateUserRequest;
-         const response = await UserService.updateCurrentUser(req.user, request);
+         const response = await UserService.updateCurrent(req.user, request);
 
-         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true });
+         const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true, maxAge });
 
          res.status(200).json({
             success: true,
@@ -96,10 +98,24 @@ export class UserController {
       }
    }
 
-   static async deleteUserByUsername(req: Request, res: Response, next: NextFunction) {
+   static async updatePassword(req: UserRequest, res: Response, next: NextFunction) {
+      try {
+         const request = req.body as UpdatePasswordRequest;
+         await UserService.updatePassword(req.user, request);
+
+         res.status(200).json({
+            success: true,
+            message: 'Password updated successfully',
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async deleteByUsername(req: Request, res: Response, next: NextFunction) {
       try {
          const username = req.params.username as string;
-         const response = await UserService.deleteUserByUsername(username);
+         const response = await UserService.deleteByUsername(username);
 
          logger.debug('response: ', response);
          res.status(200).json({

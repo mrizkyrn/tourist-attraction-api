@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import {
    LoginUserRequest,
    RegisterUserRequest,
+   UpdatePasswordRequest,
    UpdateUserRequest,
    UserResponse,
    toUserResponse,
@@ -75,7 +76,7 @@ export class UserService {
       return userResponse;
    }
 
-   static async getUsers(): Promise<UserResponse[]> {
+   static async getAll(): Promise<UserResponse[]> {
       // Get all users
       const users = await prismaClient.user.findMany();
 
@@ -83,7 +84,7 @@ export class UserService {
       return users.map(toUserResponse);
    }
 
-   static async getUserByUsername(username: string): Promise<UserResponse> {
+   static async getByUsername(username: string): Promise<UserResponse> {
       // Get the user by username
       const user = await prismaClient.user.findUnique({
          where: { username: username },
@@ -97,12 +98,12 @@ export class UserService {
       return toUserResponse(user);
    }
 
-   static async getCurrentUser(user: User): Promise<UserResponse> {
+   static async getCurrent(user: User): Promise<UserResponse> {
       // Return the user response
       return toUserResponse(user);
    }
 
-   static async updateCurrentUser(user: User, request: UpdateUserRequest): Promise<UserResponse> {
+   static async updateCurrent(user: User, request: UpdateUserRequest): Promise<UserResponse> {
       // Validate the request body
       const updateRequest = Validation.validate(UserValidation.UPDATE, request);
 
@@ -115,11 +116,6 @@ export class UserService {
          if (usernameExists) {
             throw new ResponseError(400, 'Username already exists');
          }
-      }
-
-      // Hash the password if it is provided
-      if (updateRequest.password) {
-         updateRequest.password = await bcrypt.hash(updateRequest.password, 10);
       }
 
       // Update the user
@@ -143,7 +139,41 @@ export class UserService {
       return userResponse;
    }
 
-   static async deleteUserByUsername(username: string): Promise<UserResponse> {
+   static async updatePassword(user: User, request: UpdatePasswordRequest): Promise<UserResponse> {
+      // Validate the request body
+      const updatePasswordRequest = Validation.validate(UserValidation.UPDATE_PASSWORD, request);
+
+      // Get password from the user
+      const userPassword = await prismaClient.user.findUnique({
+         where: { id: user.id },
+         select: { password: true },
+      });
+
+      if (!userPassword) {
+         throw new ResponseError(404, 'User not found');
+      }
+
+      // Check if the old password is correct
+      const passwordMatch = await bcrypt.compare(updatePasswordRequest.old_password, userPassword.password);
+
+      if (!passwordMatch) {
+         throw new ResponseError(400, 'Invalid old password');
+      }
+
+      // Hash the new password
+      const hashedPassword = await bcrypt.hash(updatePasswordRequest.new_password, 10);
+
+      // Update the user
+      const updatedUser = await prismaClient.user.update({
+         where: { id: user.id },
+         data: { password: hashedPassword },
+      });
+
+      // Return the user response
+      return toUserResponse(updatedUser);
+   }
+
+   static async deleteByUsername(username: string): Promise<UserResponse> {
       // Get the user by username
       const user = await prismaClient.user.findUnique({
          where: { username: username },

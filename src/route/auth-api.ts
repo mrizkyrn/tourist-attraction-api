@@ -9,12 +9,13 @@ export const authApi = express.Router();
 authApi.use(authMiddleware);
 
 // User routes
-authApi.get('/api/users', permit('ADMIN'), UserController.getUsers);
-authApi.get('/api/users/username/:username', permit('ADMIN'), UserController.getUserByUsername);
-authApi.get('/api/users/current', UserController.getCurrentUser);
+authApi.get('/api/users', permit('ADMIN'), UserController.getAll);
+authApi.get('/api/users/username/:username', permit('ADMIN'), UserController.getByUsername);
+authApi.get('/api/users/current', UserController.getCurrent);
 authApi.post('/api/users/logout', UserController.logout);
-authApi.patch('/api/users/current', UserController.updateCurrentUser);
-authApi.delete('/api/users/:username', permit('ADMIN'), UserController.deleteUserByUsername);
+authApi.patch('/api/users/current', UserController.updateCurrent);
+authApi.patch('/api/users/current/password', UserController.updatePassword);
+authApi.delete('/api/users/:username', permit('ADMIN'), UserController.deleteByUsername);
 
 // Tourist attraction routes
 authApi.post('/api/tourist-attractions', upload.single('thumbnail'), TouristAttractionController.create);
