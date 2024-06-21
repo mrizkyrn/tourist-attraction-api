@@ -1,6 +1,7 @@
 import express from 'express';
 import { UserController } from '../controller/user-controller';
 import { TouristAttractionController } from '../controller/tourist-attraction-controller';
+import { ReviewController } from '../controller/review-controller';
 import { authMiddleware } from '../middleware/auth-middleware';
 import { permit } from '../middleware/permit-middleware';
 import { upload } from '../application/multer';
@@ -25,3 +26,10 @@ authApi.get('/api/tourist-attractions/username/:username', TouristAttractionCont
 authApi.get('/api/tourist-attractions/status/:status', permit('ADMIN'), TouristAttractionController.getByStatus);
 authApi.put('/api/tourist-attractions/:id', upload.single('thumbnail'), TouristAttractionController.update);
 authApi.delete('/api/tourist-attractions/:id', TouristAttractionController.delete);
+
+// Review routes
+authApi.get('/api/reviews/attraction/:id', ReviewController.getByAttractionId);
+authApi.get('/api/reviews/username/:username/attraction/:id', ReviewController.getByUsernameAndAttractionId);
+authApi.post('/api/reviews', ReviewController.create);
+authApi.put('/api/reviews/:id', ReviewController.update);
+authApi.delete('/api/reviews/:id', ReviewController.delete);
