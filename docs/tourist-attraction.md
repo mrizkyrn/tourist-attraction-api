@@ -418,4 +418,74 @@ Delete an existing tourist attraction by ID.
 }
 ```
 
+## Approve Attraction
+
+Approve an attraction.
+
+### Request
+
+-  **URL**: `/api/attraction-approvals/:id/approve`
+-  **Method**: `POST`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "Attraction approved"
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Unauthorized"
+}
+```
+
+## Reject Attraction
+
+Reject an attraction.
+
+### Request
+
+-  **URL**: `/api/attraction-approvals/:id/reject`
+-  **Method**: `POST`
+-  **Headers**:
+   -  `Authorization`: `Bearer unique_token`
+
+### Response Body Success
+
+-  **Status Code**: `200`
+-  **Response Body**:
+
+```json
+{
+   "success": true,
+   "message": "Attraction rejected"
+}
+```
+
+### Response Body Failure
+
+-  **Status Code**: `401`
+-  **Response Body**:
+
+```json
+{
+   "success": false,
+   "message": "Unauthorized"
+}
+```
+
 []: # (END) -->

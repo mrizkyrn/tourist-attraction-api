@@ -16,7 +16,10 @@ model User {
   password  String @db.VarChar(100)
   role      Role   @default(USER)
 
-  tourist_attractions TouristAttraction[]
+  tourist_attractions  TouristAttraction[]
+  attraction_approvals AttractionApproval[]
+  reviews              Review[]
+  favorites            Favorite[]
 
   @@map("users")
 }
@@ -42,9 +45,54 @@ model TouristAttraction {
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
-  user      User       @relation(fields: [username], references: [username])
+  users     User                 @relation(fields: [username], references: [username], onDelete: Cascade)
+  approvals AttractionApproval[]
+  reviews   Review[]
+  favorite  Favorite[]
 
   @@map("tourist_attractions")
+}
+
+model AttractionApproval {
+  id            Int      @id @default(autoincrement())
+  attraction_id Int
+  username      String
+  status        Status   @default(PENDING)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  tourist_attractions TouristAttraction @relation(fields: [attraction_id], references: [id], onDelete: Cascade)
+  users               User              @relation(fields: [username], references: [username], onDelete: Cascade)
+
+  @@map("attraction_approvals")
+}
+
+model Review {
+  id            Int      @id @default(autoincrement())
+  username      String
+  attraction_id Int
+  rating        Float
+  comment       String
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  users              User              @relation(fields: [username], references: [username], onDelete: Cascade)
+  tourist_attraction TouristAttraction @relation(fields: [attraction_id], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Favorite {
+  id            Int      @id @default(autoincrement())
+  username      String
+  attraction_id Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  users              User              @relation(fields: [username], references: [username], onDelete: Cascade)
+  tourist_attraction TouristAttraction @relation(fields: [attraction_id], references: [id], onDelete: Cascade)
+
+  @@map("favorites")
 }
 
 enum Role {

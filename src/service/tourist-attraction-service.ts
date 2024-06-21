@@ -57,7 +57,7 @@ export class TouristAttractionService {
 
       // Define the filter options
       const filter: Prisma.TouristAttractionWhereInput = {
-         // status: 'APPROVED', // Filter only approved tourist attractions
+         status: 'APPROVED', // Filter only approved tourist attractions
          name: searchRequest.name ? { contains: searchRequest.name, mode: 'insensitive' } : undefined,
          category: searchRequest.category ? { contains: searchRequest.category, mode: 'insensitive' } : undefined,
          city: searchRequest.city ? { contains: searchRequest.city, mode: 'insensitive' } : undefined,
@@ -195,5 +195,69 @@ export class TouristAttractionService {
 
       // Return the tourist attraction response
       return toTouristAttractionDetailResponse(touristAttraction);
+   }
+
+   static async approve(id: number): Promise<TouristAttractionResponse> {
+      // Retrieve the tourist attraction
+      const touristAttraction = await prismaClient.touristAttraction.findUnique({
+         where: { id },
+      });
+
+      // Check if the tourist attraction exists
+      if (!touristAttraction) {
+         throw new ResponseError(404, 'Tourist attraction not found');
+      }
+
+      // Update the tourist attraction status
+      const updatedTouristAttraction = await prismaClient.touristAttraction.update({
+         where: { id },
+         data: {
+            status: 'APPROVED',
+         },
+      });
+
+      // Insert the approval record
+      await prismaClient.attractionApproval.create({
+         data: {
+           attraction_id: touristAttraction.id,
+           username: touristAttraction.username,
+           status: 'APPROVED',
+         },
+      });
+      
+      // Return the tourist attraction response
+      return toTouristAttractionDetailResponse(updatedTouristAttraction);
+   }
+
+   static async reject(id: number): Promise<TouristAttractionResponse> {
+      // Retrieve the tourist attraction
+      const touristAttraction = await prismaClient.touristAttraction.findUnique({
+         where: { id },
+      });
+
+      // Check if the tourist attraction exists
+      if (!touristAttraction) {
+         throw new ResponseError(404, 'Tourist attraction not found');
+      }
+
+      // Update the tourist attraction status
+      const updatedTouristAttraction = await prismaClient.touristAttraction.update({
+         where: { id },
+         data: {
+            status: 'REJECTED',
+         },
+      });
+
+      // Insert the rejection record
+      await prismaClient.attractionApproval.create({
+         data: {
+           attraction_id: touristAttraction.id,
+           username: touristAttraction.username,
+           status: 'REJECTED',
+         },
+      });
+
+      // Return the tourist attraction response
+      return toTouristAttractionDetailResponse(updatedTouristAttraction);
    }
 }

@@ -138,4 +138,34 @@ export class TouristAttractionController {
          next(error);
       }
    }
+
+   static async approve(req: Request, res: Response, next: NextFunction) {
+      try {
+         const id = Number(req.params.id);
+         const response = await TouristAttractionService.approve(id);
+
+         res.status(200).json({
+            success: true,
+            message: 'Tourist attraction approved successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
+
+   static async reject(req: Request, res: Response, next: NextFunction) {
+      try {
+         const id = Number(req.params.id);
+         const response = await TouristAttractionService.reject(id);
+
+         res.status(200).json({
+            success: true,
+            message: 'Tourist attraction rejected successfully',
+            data: response,
+         });
+      } catch (error) {
+         next(error);
+      }
+   }
 }
