@@ -17,6 +17,7 @@ model User {
   role      Role   @default(USER)
 
   tourist_attractions TouristAttraction[]
+  favorite  Favorite[]
 
   @@map("users")
 }
@@ -43,8 +44,22 @@ model TouristAttraction {
   updated_at   DateTime @updatedAt
 
   user      User       @relation(fields: [username], references: [username])
+  favorite  Favorite[]
 
   @@map("tourist_attractions")
+}
+
+model Favorite {
+  id            Int      @id @default(autoincrement())
+  username      String
+  attraction_id Int
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  users              User              @relation(fields: [username], references: [username])
+  tourist_attraction TouristAttraction @relation(fields: [attraction_id], references: [id])
+
+  @@map("favorites")
 }
 
 enum Role {
