@@ -34,7 +34,7 @@ export class FavoriteService {
       console.log(existingFavorite);
 
       if (existingFavorite) {
-         throw new ResponseError(400, 'User has already favorited the tourist attraction');
+         throw new ResponseError(400, 'User has already favorited the tourist attraction!');
       }
 
       // Create the favorite record
@@ -64,7 +64,7 @@ export class FavoriteService {
       });
 
       if (!existingFavorite) {
-         throw new ResponseError(400, 'User has not favorited the tourist attraction');
+         throw new ResponseError(400, 'User has not favorited the tourist attraction!');
       }
 
       // Delete the favorite record
