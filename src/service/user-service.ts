@@ -32,7 +32,6 @@ export class UserService {
       registerRequest.password = await bcrypt.hash(registerRequest.password, 10);
 
       // Create the user
-      console.log(registerRequest);
       const user = await prismaClient.user.create({
          data: registerRequest,
       });

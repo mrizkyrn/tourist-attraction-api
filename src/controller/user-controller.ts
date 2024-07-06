@@ -26,7 +26,7 @@ export class UserController {
          const response = await UserService.login(request);
 
          const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true, maxAge });
+         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'none', secure: true, maxAge });
 
          res.status(200).json({
             success: true,
@@ -86,7 +86,7 @@ export class UserController {
          const response = await UserService.updateCurrent(req.user, request);
 
          const maxAge = 24 * 60 * 60 * 1000; // 24 hours
-         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'strict', secure: true, maxAge });
+         res.cookie('access_token', response.token, { httpOnly: true, sameSite: 'none', secure: true, maxAge });
 
          res.status(200).json({
             success: true,

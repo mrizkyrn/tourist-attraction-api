@@ -23,7 +23,6 @@ export class FavoriteController {
    static async create(req: UserRequest, res: Response, next: NextFunction) {
       try {
          const request: CreateFavoriteRequest = req.body as CreateFavoriteRequest;
-         console.log("request: ", request);
          const response = await FavoriteService.create(req.user, request);
 
          res.status(201).json({
@@ -55,7 +54,6 @@ export class FavoriteController {
       try {
          const attraction_id = parseInt(req.query.attraction_id as string);
          const response = await FavoriteService.checkFavorite(req.user, attraction_id);
-         console.log("response: ", response);
 
          res.status(200).json({
             success: true,

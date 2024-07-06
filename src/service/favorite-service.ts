@@ -22,8 +22,6 @@ export class FavoriteService {
    }
 
    static async create(user: User, request: CreateFavoriteRequest): Promise<FavoriteResponse> {
-      console.log(user.username, request);
-      console.log(user.username, request.attraction_id);
       // Check if the user has already favorited the tourist attraction
       const existingFavorite = await prismaClient.favorite.findFirst({
          where: {
@@ -31,7 +29,6 @@ export class FavoriteService {
             attraction_id: request.attraction_id,
          },
       });
-      console.log(existingFavorite);
 
       if (existingFavorite) {
          throw new ResponseError(400, 'User has already favorited the tourist attraction');
@@ -42,8 +39,6 @@ export class FavoriteService {
          ...request,
          username: user.username,
       };
-
-      console.log(record);
 
       // Create the favorite
       const favorite = await prismaClient.favorite.create({
@@ -78,7 +73,6 @@ export class FavoriteService {
    }
 
    static async checkFavorite(user: User, attractionId: number): Promise<boolean> {
-      console.log(user.username, attractionId);
       // Check if the user has already favorited the tourist attraction
       const existingFavorite = await prismaClient.favorite.findFirst({
          where: {

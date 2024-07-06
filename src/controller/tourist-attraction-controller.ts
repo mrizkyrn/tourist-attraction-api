@@ -106,7 +106,6 @@ export class TouristAttractionController {
    }
 
    static async update(req: UserRequest, res: Response, next: NextFunction) {
-      console.log("req.body: ", req.body);
       try {
          const id = Number(req.params.id);
          const request: CreateTouristAttractionRequest = req.body as CreateTouristAttractionRequest;

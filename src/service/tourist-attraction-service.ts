@@ -32,8 +32,6 @@ export class TouristAttractionService {
          username: user.username,
       };
 
-      console.log(record);
-
       try {
          // Create the tourist attraction
          const touristAttraction = await prismaClient.touristAttraction.create({
@@ -43,7 +41,6 @@ export class TouristAttractionService {
          // Return the tourist attraction response
          return toTouristAttractionDetailResponse(touristAttraction);
       } catch (error) {
-         console.log('error: ', error);
          throw new ResponseError(400, 'Error creating tourist attraction');
       }
    }
